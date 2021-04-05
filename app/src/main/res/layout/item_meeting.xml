@@ -14,7 +14,7 @@
         android:layout_marginStart="8dp"
         android:src="@drawable/ic_baseline_delete_24"
         app:layout_constraintBottom_toBottomOf="@+id/mailAddress"
-        app:layout_constraintStart_toEndOf="@+id/ownerName1"
+        app:layout_constraintStart_toEndOf="@+id/reservationName"
         app:layout_constraintTop_toTopOf="parent"></ImageView>
 
     <ImageView
@@ -25,41 +25,41 @@
         android:src="@drawable/ic_baseline_brightness_1_24"
         app:layout_constraintBottom_toBottomOf="@+id/mailAddress"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/roomName1"></ImageView>
+        app:layout_constraintTop_toTopOf="@+id/roomId"></ImageView>
 
     <TextView
-        android:id="@+id/roomName1"
+        android:id="@+id/roomId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:padding="2dp"
-        android:text="REUNION A "
+        android:text="@string/meeting_name"
         app:layout_constraintStart_toEndOf="@+id/imageRound"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/time1"
+        android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:padding="2dp"
-        android:text=" - 14H00 - "
-        app:layout_constraintEnd_toStartOf="@+id/ownerName1"
-        app:layout_constraintStart_toEndOf="@+id/roomName1"
+        android:text="@string/time"
+        app:layout_constraintEnd_toStartOf="@+id/reservationName"
+        app:layout_constraintStart_toEndOf="@+id/roomId"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/ownerName1"
+        android:id="@+id/reservationName"
         android:layout_width="134dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:padding="2dp"
-        android:text="TextView"
-        app:layout_constraintStart_toEndOf="@+id/time1"
+        android:text="@string/reservation_name"
+        app:layout_constraintStart_toEndOf="@+id/time"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -69,9 +69,9 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:padding="2dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="@+id/ownerName1"
+        android:text="@string/mails_addresses"
+        app:layout_constraintEnd_toEndOf="@+id/reservationName"
         app:layout_constraintStart_toEndOf="@+id/imageRound"
-        app:layout_constraintTop_toBottomOf="@+id/time1" />
+        app:layout_constraintTop_toBottomOf="@+id/time" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

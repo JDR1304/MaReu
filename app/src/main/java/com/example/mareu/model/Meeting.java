@@ -41,7 +41,7 @@ public class Meeting {
         this.id = id;
     }
 
-    public int getRoomName() {
+    public int getRoomId() {
         return roomId;
     }
 
