@@ -1,5 +1,7 @@
 package com.example.mareu.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class Meeting {
@@ -7,8 +9,8 @@ public class Meeting {
     /** Identifier */
     private long id;
 
-    /** Room name */
-    private int roomId;
+    /** Meeting room */
+    private Room meetingRoom;
 
     /** reservation Time */
     private long time;
@@ -17,18 +19,18 @@ public class Meeting {
     private String name;
 
     /** email address */
-    private List<String> email;
+    private List<String> participantEmails;
 
     /** topic */
     private String topic;
 
     /** Constructor */
-    public Meeting(long id, int roomId, long time, String name, List<String> email, String topic) {
+    public Meeting(long id, Room meetingRoom, long time, String name, List<String> participantEmails, String topic) {
         this.id = id;
-        this.roomId = roomId;
+        this.meetingRoom = meetingRoom;
         this.time = time;
         this.name = name;
-        this.email = email;
+        this.participantEmails = participantEmails;
         this.topic = topic;
     }
 
@@ -41,19 +43,19 @@ public class Meeting {
         this.id = id;
     }
 
-    public int getRoomId() {
-        return roomId;
+    public Room getRoom() {
+        return meetingRoom;
     }
 
-    public void setRoomId(int roomId) {
-        this.roomId = roomId;
+    public void setRoom(Room meetingRoom) {
+        this.meetingRoom = meetingRoom;
     }
 
-    public long getTime() {
+    public long getTimeStamp() {
         return time;
     }
 
-    public void setTime(long time) {
+    public void setTimeStamp(long time) {
         this.time = time;
     }
 
@@ -65,12 +67,12 @@ public class Meeting {
         this.name = name;
     }
 
-    public List<String> getEmail() {
-        return email;
+    public List<String> getParticipantEmails() {
+        return participantEmails;
     }
 
-    public void setEmail(List<String> email) {
-        this.email = email;
+    public void setParticipantEmails(List<String> participantEmails) {
+        this.participantEmails = participantEmails;
     }
 
     public String getTopic() {
@@ -81,5 +83,20 @@ public class Meeting {
         this.topic = topic;
     }
 
+    public String getStringMails () {
+        String emails = "";
+        String space = "  ";
+        for (int i = 0; i < participantEmails.size(); i++) {
+            emails = participantEmails.get(i) + space + emails;
+        }
+        return emails;
+    }
 
+    public String setTime (long timeStamp){
+        SimpleDateFormat formatter = new SimpleDateFormat("- HH:mm -");
+        String dateString = formatter.format(new Date(Long.parseLong(Long.toString(timeStamp))));
+        return dateString;
+    }
 }
+
+

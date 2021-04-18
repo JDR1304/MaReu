@@ -1,12 +1,16 @@
 package com.example.mareu.model;
 
+
 public class Room {
+
     private int id;
     private String name;
+    private int colorDrawable;
 
-    public Room(int id, String name) {
+    public Room(int id, String name, int colorDrawable) {
         this.id = id;
         this.name = name;
+        this.colorDrawable = colorDrawable;
     }
 
     public int getId() {
@@ -24,4 +28,14 @@ public class Room {
     public void setName(String name) {
         this.name = name;
     }
+
+    public int getColorDrawable() {
+        return colorDrawable;
+    }
+
+    public void setColorDrawable(int colorDrawable) {
+        this.colorDrawable = colorDrawable;
+    }
+
+
 }

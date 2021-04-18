@@ -1,10 +1,8 @@
 package com.example.mareu.controller;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,10 +12,9 @@ import android.view.ViewGroup;
 
 import com.example.mareu.R;
 import com.example.mareu.di.DI;
-import com.example.mareu.model.Meeting;
 import com.example.mareu.service.ApiService;
 
-import java.util.List;
+
 
 
 public class MeetingFragment extends Fragment {
@@ -26,10 +23,20 @@ public class MeetingFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private MyMeetingRecyclerViewAdapter adapter;
 
-    public MeetingFragment() {
-        // Required empty public constructor
+    /**
+     * Create and return a new instance
+     *
+     * @return @{@link MeetingFragment}
+     */
+    public static MeetingFragment newInstance() {
+        MeetingFragment fragment = new MeetingFragment();
+        /*
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(FAVORITE_KEY, isFavorite);
+        fragment.setArguments(bundle);
+        */
+        return fragment;
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

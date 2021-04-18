@@ -3,19 +3,18 @@ package com.example.mareu.controller;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mareu.R;
-import com.example.mareu.di.DI;
 import com.example.mareu.model.Meeting;
-import com.example.mareu.model.Room;
+
 
 import java.util.List;
+
 
 public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeetingRecyclerViewAdapter.ViewHolder> {
 
@@ -38,7 +37,11 @@ public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeeting
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         Meeting meeting = mMeetings.get(position);
-
+        holder.meetingRoom.setText(meeting.getRoom().getName());
+        holder.roundView.getDrawable().mutate().setTint(meeting.getRoom().getColorDrawable());
+        holder.time.setText(meeting.setTime(meeting.getTimeStamp()));
+        holder.reservationName.setText(meeting.getName());
+        holder.mailAddress.setText(meeting.getStringMails());
 
     }
 
