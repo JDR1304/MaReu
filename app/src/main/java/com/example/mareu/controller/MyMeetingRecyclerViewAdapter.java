@@ -1,5 +1,7 @@
 package com.example.mareu.controller;
 
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,11 +9,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mareu.R;
 import com.example.mareu.model.Meeting;
 
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -42,6 +48,13 @@ public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeeting
         holder.time.setText(meeting.setTime(meeting.getTimeStamp()));
         holder.reservationName.setText(meeting.getName());
         holder.mailAddress.setText(meeting.getStringMails());
+
+        holder.itemView.setOnClickListener(v -> {
+            long id = meeting.getId();
+            Log.d("id de la vue", "onBindViewHolder: ");
+            EventBus.getDefault().post(AddOrMeetingDetailsFragment.newInstance(id));
+
+        });
 
     }
 

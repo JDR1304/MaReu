@@ -1,10 +1,13 @@
 package com.example.mareu.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class Meeting {
+public class Meeting  {
 
     /** Identifier */
     private long id;
@@ -23,6 +26,9 @@ public class Meeting {
 
     /** topic */
     private String topic;
+
+    /** Key for Room **/
+    public static final String MEETING_KEY = "MEETING_KEY";
 
     /** Constructor */
     public Meeting(long id, Room meetingRoom, long time, String name, List<String> participantEmails, String topic) {

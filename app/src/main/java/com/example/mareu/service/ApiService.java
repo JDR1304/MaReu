@@ -14,10 +14,11 @@ public interface ApiService {
 
     void removeMeeting(Meeting meeting);
 
+    Meeting getMeetingById(long id);
 
     //Get List of room
 
-    List <Room> getRoom();
+    List <Room> getRooms();
 
     Room getRoomById(int id);
 

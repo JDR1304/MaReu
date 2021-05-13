@@ -2,8 +2,14 @@
     <string name="app_name">Mareu</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="meeting_name">MEETING NAME</string>
+    <string name="room_name">ROOM NAME</string>
     <string name="time">- TIME -</string>
     <string name="reservation_name">reservation name</string>
     <string name="mails_addresses">mails addresses</string>
+    <string name="meeting_room">Salle de réunion :</string>
+    <string name="heures">Heures :</string>
+    <string name="reserve_par">Réservé par :</string>
+    <string name="participants">Participants :</string>
+    <string name="sujet_de_la_reunion">Sujet de la réunion :</string>
+    <string name="validate">Valider</string>
 </resources>

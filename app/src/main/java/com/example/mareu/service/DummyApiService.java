@@ -25,9 +25,19 @@ public class DummyApiService implements ApiService {
 
     }
 
+    @Override
+    public Meeting getMeetingById(long id) {
+        for (int i = 0; i<meetings.size(); i++){
+            if (meetings.get(i).getId()== id){
+                return meetings.get(i);
+            }
+        }
+        return null;
+    }
+
 
     @Override
-    public List<Room> getRoom() {
+    public List<Room> getRooms() {
         return rooms;
     }
 

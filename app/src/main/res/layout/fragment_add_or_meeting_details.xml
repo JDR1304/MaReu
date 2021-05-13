@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_add_or_meeting_details"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".controller.AddOrMeetingDetailsFragment">
+
+
+    <TextView
+        android:id="@+id/meeting_room"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/meeting_room"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/meeting_room"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/meeting_time"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/heures"
+        app:layout_constraintEnd_toEndOf="@+id/meeting_room"
+        app:layout_constraintStart_toStartOf="@+id/meeting_room"
+        app:layout_constraintTop_toBottomOf="@+id/meeting_room" />
+
+    <TextView
+        android:id="@+id/reservation_name"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/reserve_par"
+        app:layout_constraintEnd_toEndOf="@+id/meeting_time"
+        app:layout_constraintStart_toStartOf="@+id/meeting_time"
+        app:layout_constraintTop_toBottomOf="@+id/meeting_time" />
+
+    <TextView
+        android:id="@+id/participants"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/participants"
+        app:layout_constraintEnd_toEndOf="@+id/reservation_name"
+        app:layout_constraintStart_toStartOf="@+id/reservation_name"
+        app:layout_constraintTop_toBottomOf="@+id/reservation_name" />
+
+    <TextView
+        android:id="@+id/topic"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/sujet_de_la_reunion"
+
+        app:layout_constraintEnd_toEndOf="@+id/participants"
+        app:layout_constraintStart_toStartOf="@+id/participants"
+        app:layout_constraintTop_toBottomOf="@+id/participants" />
+
+    <EditText
+        android:id="@+id/edit_text_date"
+        android:layout_width="104dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="44dp"
+        android:ems="10"
+        android:inputType="time"
+        app:layout_constraintStart_toEndOf="@+id/meeting_time"
+        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+
+    <EditText
+        android:id="@+id/edit_text_reservation_name"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="24dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/reservation_name"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_date" />
+
+    <EditText
+        android:id="@+id/edit_text_participantes"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="24dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/participants"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_reservation_name" />
+
+    <EditText
+        android:id="@+id/edit_text_topic"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="24dp"
+        android:text="TextView"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/topic"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_participantes" />
+
+    <Button
+        android:id="@+id/validate_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="@string/validate"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnTimeDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="24dp"
+        android:text="Time"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/edit_text_date"
+        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

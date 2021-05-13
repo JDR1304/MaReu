@@ -9,12 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.mareu.R;
 import com.example.mareu.di.DI;
 import com.example.mareu.service.ApiService;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-
+import org.greenrobot.eventbus.EventBus;
 
 
 public class MeetingFragment extends Fragment {
@@ -22,6 +24,7 @@ public class MeetingFragment extends Fragment {
     private ApiService mApiService;
     private RecyclerView mRecyclerView;
     private MyMeetingRecyclerViewAdapter adapter;
+    private FloatingActionButton fab;
 
     /**
      * Create and return a new instance
@@ -42,8 +45,6 @@ public class MeetingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApiService = DI.getApiService();
-
-
     }
 
     @Override
@@ -55,6 +56,15 @@ public class MeetingFragment extends Fragment {
         adapter = new MyMeetingRecyclerViewAdapter(mApiService.getMeeting());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(adapter);
+
+        fab = view.findViewById(R.id.floatingActionButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(AddOrMeetingDetailsFragment.newInstance(-1));
+            }
+        });
         return view;
     }
+
 }
