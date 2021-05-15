@@ -13,6 +13,7 @@ import android.widget.Button;
 
 import com.example.mareu.R;
 import com.example.mareu.di.DI;
+import com.example.mareu.model.Meeting;
 import com.example.mareu.service.ApiService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -20,6 +21,7 @@ import org.greenrobot.eventbus.EventBus;
 
 
 public class MeetingFragment extends Fragment {
+
 
     private ApiService mApiService;
     private RecyclerView mRecyclerView;
@@ -33,11 +35,7 @@ public class MeetingFragment extends Fragment {
      */
     public static MeetingFragment newInstance() {
         MeetingFragment fragment = new MeetingFragment();
-        /*
-        Bundle bundle = new Bundle();
-        bundle.putBoolean(FAVORITE_KEY, isFavorite);
-        fragment.setArguments(bundle);
-        */
+
         return fragment;
     }
 
@@ -61,7 +59,7 @@ public class MeetingFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventBus.getDefault().post(AddOrMeetingDetailsFragment.newInstance(-1));
+                EventBus.getDefault().post(AddOrMeetingDetailsFragment.newInstance(0));
             }
         });
         return view;

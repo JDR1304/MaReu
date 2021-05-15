@@ -30,6 +30,8 @@ public class Meeting  {
     /** Key for Room **/
     public static final String MEETING_KEY = "MEETING_KEY";
 
+    public Meeting (long id){}
+
     /** Constructor */
     public Meeting(long id, Room meetingRoom, long time, String name, List<String> participantEmails, String topic) {
         this.id = id;

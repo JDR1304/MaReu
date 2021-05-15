@@ -45,16 +45,27 @@ public class AddOrMeetingDetailsFragment extends Fragment implements DatePickerD
     private TextView meetingRoom;
     private TextView meetingTime;
     private TextView reservationName;
+    private TextView participants;
     private TextView topic;
     private Button validateBtn;
-    private Button btnTimeDate;
+
+    //private EditText editTextRoom;
+    private EditText editTextDateAndTime;
+    private EditText editTextReservationName;
+    private EditText editTextParticipants;
+    private EditText editTextSubject;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments()!=null && getArguments().containsKey(MEETING_ID)) {
+        if (getArguments()!=null && getArguments().containsKey(MEETING_ID) && getArguments().getLong(MEETING_ID)>0) {
             meeting = DI.getApiService().getMeetingById(getArguments().getLong(MEETING_ID));
+
+            }
+        else {
+            meeting = new Meeting (getArguments().getLong(MEETING_ID));
+
         }
     }
 
@@ -76,27 +87,37 @@ public class AddOrMeetingDetailsFragment extends Fragment implements DatePickerD
         meetingRoom = view.findViewById(R.id.meeting_room);
         meetingTime = view.findViewById(R.id.meeting_time);
         reservationName = view.findViewById(R.id.reservationName);
+        participants = view.findViewById(R.id.participants);
         topic = view.findViewById(R.id.topic);
         validateBtn = view.findViewById(R.id.validate_button);
-        btnTimeDate =view.findViewById(R.id.btnTimeDate);
 
-        if (meeting.getId()>=0) {
-            // ((EditText)view.findViewById(R.id.edit_text_date)).setText((int)meeting.getTimeStamp());
+        RoomArrayAdapter roomAdapter = new RoomArrayAdapter(getContext(), DI.getApiService().getRooms());
+
+
+        if (meeting.getId()>0) {
+            ((EditText) view.findViewById(R.id.edit_text_date)).setText(meeting.setTime(meeting.getTimeStamp()));
             ((EditText) view.findViewById(R.id.edit_text_topic)).setText(meeting.getTopic());
             ((EditText) view.findViewById(R.id.edit_text_reservation_name)).setText(meeting.getName());
-            //((EditText) view.findViewById(R.id.edit_text_participantes)).setText((List)meeting.getParticipantEmails());
+            ((EditText) view.findViewById(R.id.edit_text_participantes)).setText(meeting.getStringMails());
 
            ///Getting the instance of Spinner and applying OnItemSelectedListener on it
             roomsSpinner = (Spinner) view.findViewById(R.id.spinner);
-            RoomArrayAdapter roomAdapter = new RoomArrayAdapter(getContext(), DI.getApiService().getRooms());
             roomsSpinner.setAdapter(roomAdapter);
 
 
+        }
+        else{
+            roomsSpinner = (Spinner) view.findViewById(R.id.spinner);
+            roomsSpinner.setAdapter(roomAdapter);
+            editTextDateAndTime = (EditText) view.findViewById(R.id.edit_text_date); ;
+            editTextReservationName = (EditText) view.findViewById(R.id.edit_text_reservation_name);
+            editTextParticipants = (EditText) view.findViewById(R.id.edit_text_participantes);
+            editTextSubject = (EditText) view.findViewById(R.id.edit_text_topic);
+            editTextReservationName.getText();
+            editTextParticipants.getText();
+            editTextSubject.getText();
 
-        }else{
-            ((EditText) view.findViewById(R.id.edit_text_topic)).setText(meeting.getTopic());
-            ((EditText) view.findViewById(R.id.edit_text_reservation_name)).setText(meeting.getName());
-            btnTimeDate.setOnClickListener(new View.OnClickListener() {
+            editTextDateAndTime.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -108,7 +129,7 @@ public class AddOrMeetingDetailsFragment extends Fragment implements DatePickerD
                 }
             });
         }
-
+                    
         validateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,25 +141,28 @@ public class AddOrMeetingDetailsFragment extends Fragment implements DatePickerD
         }
 
     @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        myHour = hourOfDay;
-        myMinute = minute;
-        meetingTime.setText("Year: " + myYear + "\n" +
-                "Month: " + myMonth + "\n" +
-                "Day: " + myday + "\n" +
-                "Hour: " + myHour + "\n" +
-                "Minute: " + myMinute);
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            myYear = year;
+            myday = day;
+            myMonth = month;
+            Calendar c = Calendar.getInstance();
+            hour = c.get(Calendar.HOUR);
+            minute = c.get(Calendar.MINUTE);
+            TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), AddOrMeetingDetailsFragment.this::onTimeSet, hour, minute, DateFormat.is24HourFormat(getContext()));
+            timePickerDialog.show();
     }
 
     @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        myYear = year;
-        myday = day;
-        myMonth = month;
-        Calendar c = Calendar.getInstance();
-        hour = c.get(Calendar.HOUR);
-        minute = c.get(Calendar.MINUTE);
-        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), AddOrMeetingDetailsFragment.this::onTimeSet, hour, minute, DateFormat.is24HourFormat(getContext()));
-        timePickerDialog.show();
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        myHour = hourOfDay;
+        myMinute = minute;
+
+        if (myMinute<10){
+            editTextDateAndTime.setText(myYear + "/" + myMonth + "/" + myday + "   " + myHour + ":0" + myMinute);
+        }
+        else {
+            editTextDateAndTime.setText(myYear + "/" + myMonth + "/" + myday + "   " + myHour + ":" + myMinute);
+        }
     }
+
 }
