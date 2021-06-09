@@ -7,11 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".controller.MainActivity">
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_meeting_recyclerview"
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        app:layoutManager="LinearLayoutManager">
+        android:layout_height="565dp"
+        app:layoutManager="LinearLayoutManager"
+        app:layout_constraintTop_toTopOf="parent">
+
 
     </androidx.recyclerview.widget.RecyclerView>
 

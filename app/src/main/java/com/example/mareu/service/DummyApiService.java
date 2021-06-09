@@ -17,12 +17,12 @@ public class DummyApiService implements ApiService {
 
     @Override
     public void addMeeting(Meeting meeting) {
-
+        meetings.add(meeting);
     }
 
     @Override
     public void removeMeeting(Meeting meeting) {
-
+        meetings.remove(meeting);
     }
 
     @Override
@@ -49,5 +49,11 @@ public class DummyApiService implements ApiService {
             }
         }
         return null;
+    }
+
+    @Override
+    public void updateMeeting(Meeting meeting) {
+        Meeting originalMeeting = getMeetingById(meeting.getId());
+        originalMeeting = meeting;
     }
 }

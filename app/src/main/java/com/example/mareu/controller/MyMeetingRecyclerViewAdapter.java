@@ -1,6 +1,6 @@
 package com.example.mareu.controller;
 
-import android.content.Intent;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mareu.R;
+import com.example.mareu.event.DeleteMeetingEvent;
 import com.example.mareu.model.Meeting;
 
 
@@ -27,11 +25,7 @@ public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeeting
 
     private final List<Meeting> mMeetings;
 
-    public MyMeetingRecyclerViewAdapter (List<Meeting> items){
-
-        mMeetings = items;
-    }
-
+    public MyMeetingRecyclerViewAdapter (List<Meeting> items){ mMeetings = items;}
 
     @Override
     public ViewHolder onCreateViewHolder( ViewGroup parent, int viewType) {
@@ -42,12 +36,16 @@ public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeeting
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        String dash = " - ";
         Meeting meeting = mMeetings.get(position);
         holder.meetingRoom.setText(meeting.getRoom().getName());
         holder.roundView.getDrawable().mutate().setTint(meeting.getRoom().getColorDrawable());
-        holder.time.setText(meeting.setTime(meeting.getTimeStamp()));
+        holder.time.setText(dash + meeting.setTime(meeting.getTimeStamp()) + dash);
         holder.reservationName.setText(meeting.getName());
         holder.mailAddress.setText(meeting.getStringMails());
+
+        // Remove le meeting, send event to the meeting fragment to remove it and set a new adapter
+        holder.binView.setOnClickListener(v -> EventBus.getDefault().post(new DeleteMeetingEvent(meeting)));
 
         holder.itemView.setOnClickListener(v -> {
             long id = meeting.getId();
@@ -79,10 +77,11 @@ public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeeting
             super(view);
             roundView = view.findViewById(R.id.imageRound);
             binView = view.findViewById(R.id.imageDelete);
-            meetingRoom = view.findViewById(R.id.roomId);
+            meetingRoom = view.findViewById(R.id.RoomName);
             time = view.findViewById(R.id.time);
             reservationName = view.findViewById(R.id.reservationName);
             mailAddress = view.findViewById(R.id.mailAddress);
         }
+
     }
 }

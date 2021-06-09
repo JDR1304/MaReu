@@ -22,4 +22,6 @@ public interface ApiService {
 
     Room getRoomById(int id);
 
+    void updateMeeting(Meeting meeting);
+
 }

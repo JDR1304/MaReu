@@ -63,7 +63,7 @@ public class Meeting  {
         return time;
     }
 
-    public void setTimeStamp(long time) {
+    public void setTimeStamp(Long time) {
         this.time = time;
     }
 
@@ -101,7 +101,8 @@ public class Meeting  {
     }
 
     public String setTime (long timeStamp){
-        SimpleDateFormat formatter = new SimpleDateFormat("- HH:mm -");
+        //SimpleDateFormat formatter = new SimpleDateFormat("- HH:mm -");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd  HH:mm");
         String dateString = formatter.format(new Date(Long.parseLong(Long.toString(timeStamp))));
         return dateString;
     }
