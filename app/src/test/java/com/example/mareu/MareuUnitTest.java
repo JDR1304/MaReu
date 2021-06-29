@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,6 +40,15 @@ public class MareuUnitTest {
     }
 
     @Test
+    public void addMeetingWithSuccess() {
+        Meeting meetingCreated = new Meeting(100,new Room(10, "Réunion J", 0xFF6AC34A),
+                1618596000000L, "Alexandre", Arrays.asList("alexandre@lamzone.com","sebastien@lamzone.com"), "Prospection");
+        service.addMeeting(meetingCreated);
+        assertTrue(service.getMeeting().contains(meetingCreated));
+
+    }
+
+    @Test
     public void deleteMeetingWithSuccess() {
         Meeting meetingToDelete = service.getMeeting().get(0);
         service.removeMeeting(meetingToDelete);
@@ -56,13 +66,14 @@ public class MareuUnitTest {
     }
 
     @Test
-    public void createMeetingWithSuccess() {
-        Meeting meetingCreated = new Meeting(100,new Room(10, "Réunion J", 0xFF6AC34A),
-                1618596000000L, "Alexandre", Arrays.asList("alexandre@lamzone.com","sebastien@lamzone.com"), "Prospection");
-        service.addMeeting(meetingCreated);
-        assertTrue(service.getMeeting().contains(meetingCreated));
-
+    public void updateMeetingWithSuccess(){
+        Meeting meeting = service.getMeeting().get(0);
+        assertEquals("Jerome", service.getMeeting().get(0).getName());
+        meeting.setName("Simon");
+        service.updateMeeting(meeting);
+        assertEquals("Simon", service.getMeeting().get(0).getName());
     }
+
 
     @Test
     public void getRoomByIdWithSuccess() {
@@ -71,6 +82,20 @@ public class MareuUnitTest {
         int id = room.getId();
         assertEquals(room, service.getRoomById(id));
 
+    }
+    @Test
+    public void getMeetingByRoomWithSuccess(){
+        Room room = new Room(10, "Réunion J", 0xFF6AC34A);
+        List <Meeting> liste = service.getMeetingByRoom(room);
+        assertEquals(1,liste.size());
+
+    }
+
+    @Test
+    public void getMeetingByDateWithSuccess (){
+        String date = "2021/04/16";
+        List <Meeting> liste = service.getMeetingByDate(date);
+        assertEquals(5,liste.size());
     }
 
 }

@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:icon="@drawable/ic_baseline_filter_list_24"
         android:title="menu"
         app:showAsAction="always">
         <menu>
-     <item
-        android:id="@+id/action_search"
-        android:orderInCategory="100"
-        android:title="Sort by meeting room"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_setting"
-        android:orderInCategory="100"
-        android:title="Sort by date"
-        app:showAsAction="never" />
+            <item
+                android:id="@+id/sort_by_meeting_room"
+                android:orderInCategory="100"
+                android:title="Sort by meeting room"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/sort_by_date"
+                android:orderInCategory="100"
+                android:title="Sort by date"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/all_meetings"
+                android:orderInCategory="100"
+                android:title="All Meeting"
+                app:showAsAction="never" />
         </menu>
     </item>
 </menu>

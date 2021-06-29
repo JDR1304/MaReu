@@ -1,6 +1,6 @@
 package com.example.mareu.controller;
 
-import android.app.Activity;
+
 import android.content.Context;
 import android.os.Bundle;
 
@@ -20,23 +20,28 @@ import com.example.mareu.event.AddMeetingEvent;
 import com.example.mareu.event.DeleteMeetingEvent;
 import com.example.mareu.event.UpdateMeetingEvent;
 import com.example.mareu.model.Meeting;
+import com.example.mareu.model.Room;
 import com.example.mareu.service.ApiService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
 public class MeetingFragment extends Fragment {
 
-    public static String TAG= MeetingFragment.class.getSimpleName();
-    private List <Meeting> meetings;
+    public static String TAG_MEETING_FRAGMENT = MeetingFragment.class.getSimpleName();
     private ApiService mApiService;
     private RecyclerView mRecyclerView;
     private MyMeetingRecyclerViewAdapter adapter;
     private FloatingActionButton fab;
+    private List<Meeting> mMeetingList;
 
     /**
      * Create and return a new instance
@@ -52,18 +57,18 @@ public class MeetingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApiService = DI.getApiService();
-        Log.d(TAG, "onCreate: Meeting Fragment");
+        Log.d(TAG_MEETING_FRAGMENT, "onCreate: Meeting Fragment");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_meeting, container, false);
-        Log.d(TAG, "onCreateView: Meeting Fragment");
+        Log.d(TAG_MEETING_FRAGMENT, "onCreateView: Meeting Fragment");
         mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_meeting_recyclerview);
-        adapter = new MyMeetingRecyclerViewAdapter(mApiService.getMeeting());
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.setAdapter(adapter);
+        listPublisher(mApiService.getMeeting());
+
+
 
         fab = view.findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +78,58 @@ public class MeetingFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    @Subscribe
+    public void onEventDelete(DeleteMeetingEvent deleteMeeting) {
+        mApiService.removeMeeting(deleteMeeting.meeting);
+        listPublisher(mApiService.getMeeting());
+        adapter.notifyDataSetChanged();
+    }
+
+    @Subscribe
+    public void onEventAdd(AddMeetingEvent addMeeting) {
+        mApiService.addMeeting(addMeeting.meeting);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Subscribe
+    public void updateMeetingEvent(UpdateMeetingEvent updateMeeting) {
+        mApiService.updateMeeting(updateMeeting.meeting);
+        adapter.notifyDataSetChanged();
+    }
+
+    public void filterByRoom (Room room){
+        Log.d("TAG", "filterByRoom: ");
+        List<Meeting> meetingbyroom = new ArrayList<>();
+        meetingbyroom = mApiService.getMeetingByRoom(room);
+        listPublisher(meetingbyroom);
+
+    }
+    public void filterByDate (String str){
+        List<Meeting> meetingbydate = new ArrayList<>();
+        meetingbydate = mApiService.getMeetingByDate(str);
+        listPublisher(meetingbydate);
+    }
+
+    private void listPublisher(List<Meeting> meetings) {
+        if (mMeetingList == null){
+            mMeetingList = new ArrayList<>();
+        }
+        mMeetingList.clear();
+        mMeetingList.addAll(meetings);
+        if (adapter == null) {
+            adapter = new MyMeetingRecyclerViewAdapter(mMeetingList);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            mRecyclerView.setAdapter(adapter);
+        }else {
+            mRecyclerView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    public void allMeeting(){
+        listPublisher(mApiService.getMeeting());
     }
 
     @Override
@@ -85,51 +142,33 @@ public class MeetingFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        Log.d(TAG, "onStart: Meeting Fragment");
+        Log.d(TAG_MEETING_FRAGMENT, "onStart: Meeting Fragment");
         //initList();
     }
+
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume: Meeting Fragment");
+        Log.d(TAG_MEETING_FRAGMENT, "onResume: Meeting Fragment");
 
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Log.d(TAG, "onPause: Meeting Fragment");
+        Log.d(TAG_MEETING_FRAGMENT, "onPause: Meeting Fragment");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.d(TAG, "onStop: Meeting Fragment");
+        Log.d(TAG_MEETING_FRAGMENT, "onStop: Meeting Fragment");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        Log.d(TAG, "onDestroy: Meeting Fragment");
+        Log.d(TAG_MEETING_FRAGMENT, "onDestroy: Meeting Fragment");
     }
-
-    @Subscribe
-    public void onEventDelete(DeleteMeetingEvent removeMeeting){
-        mApiService.removeMeeting(removeMeeting.meeting);
-        adapter.notifyDataSetChanged();
-
-    }
-
-    @Subscribe
-    public void onEventAdd(AddMeetingEvent addMeeting){
-        mApiService.addMeeting(addMeeting.meeting);
-        adapter.notifyDataSetChanged();
-    }
-    @Subscribe
-    public void updateMeetingevent(UpdateMeetingEvent updateMeeting){
-        mApiService.updateMeeting(updateMeeting.meeting);
-        adapter.notifyDataSetChanged();
-    }
-
 }

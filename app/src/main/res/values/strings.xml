@@ -15,4 +15,6 @@
     <string name="name">Name</string>
     <string name="participants_mails">Participants mails</string>
     <string name="topic">Topic</string>
+    <string name="veuillez_mettre_un_espace_entre_les_adresses_emails">Veuillez mettre un espace entre les adresses emails</string>
+    <string name="select_a_room">Select a room</string>
 </resources>

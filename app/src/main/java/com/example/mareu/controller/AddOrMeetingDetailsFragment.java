@@ -12,7 +12,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +21,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.example.mareu.R;
 import com.example.mareu.di.DI;
@@ -45,7 +42,7 @@ import java.util.List;
 
 public class AddOrMeetingDetailsFragment extends Fragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
-    public static String TAG = AddOrMeetingDetailsFragment.class.getSimpleName();
+    public static String TAG_AddOrMeetingDetailsFragment = AddOrMeetingDetailsFragment.class.getSimpleName();
     private static final String MEETING_ID = "MEETING_ID";
     private static Meeting meeting;
 
@@ -65,7 +62,7 @@ public class AddOrMeetingDetailsFragment extends Fragment implements DatePickerD
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d(TAG_AddOrMeetingDetailsFragment, "onCreate: add Fragment");
         // Permet d'avoir la fenetre dans laquelle on écrit tjs visible
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
@@ -92,39 +89,39 @@ public class AddOrMeetingDetailsFragment extends Fragment implements DatePickerD
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_or_meeting_details, container, false);
 
+        Log.d(TAG_AddOrMeetingDetailsFragment, "onCreateView: add Fragment");
 
         validateBtn = view.findViewById(R.id.validate_button);
+
         //Récupération de ma liste de rooms
         List<Room> rooms = DI.getApiService().getRooms();
         //Mon adaptateur de rooms
         RoomArrayAdapter roomAdapter = new RoomArrayAdapter(getContext(), rooms);
         // Initialisation des Edits texts
         initEditText(view, roomAdapter);
-        // Mon Listener sur mes edits texts
-        textChangedListenerOnEditText();
         //Mon listener sur mon Edit text date & time
         editTextDateListener();
         // Récupération de ma room selectionnée
         roomsSpinnerItemSelectedListener(rooms);
-
         // Click sur le bouton validation
         validateButtonClickListener();
+        //Affichage d'un meeting existant
+        displayMeetingFromRecyclerView(rooms);
+        //Vérifie si les champs sont correctement remplis
+        validateBtn.setEnabled(isABooleanValidateBtn());
+        // Mon Listener sur mes edits texts
+        textChangedListenerOnEditText();
 
+        return view;
+    }
 
+    private void displayMeetingFromRecyclerView(List<Room> rooms) {
         if (meeting != null && meeting.getId() > 0) {
-           /* ((EditText) view.findViewById(R.id.edit_text_date)).setText(meeting.setTime(meeting.getTimeStamp()));
-            ((EditText) view.findViewById(R.id.edit_text_topic)).setText(meeting.getTopic());
-            ((EditText) view.findViewById(R.id.edit_text_reservation_name)).setText(meeting.getName());
-            ((EditText) view.findViewById(R.id.edit_text_participantes)).setText(meeting.getStringMails());
-
-            ///Getting the instance of Spinner and applying OnItemSelectedListener on it
-            roomsSpinner = (Spinner) view.findViewById(R.id.spinner);
-
-            roomsSpinner.setAdapter(roomAdapter);*/
             editTextDateAndTime.setText(meeting.setTime(meeting.getTimeStamp()));
             editTextReservationName.setText(meeting.getName());
             editTextParticipants.setText(meeting.getStringMails());
             editTextSubject.setText(meeting.getTopic());
+
             //Display the selected room
             int indexRoom = 0;
             for (int i = 0; i < rooms.size(); i++) {
@@ -133,12 +130,13 @@ public class AddOrMeetingDetailsFragment extends Fragment implements DatePickerD
                 }
             }
             roomsSpinner.setSelection(indexRoom);
-
-        } else {
-            //validateBtn.setEnabled(false);
         }
-        validateBtn.setEnabled(false);
-        return view;
+    }
+
+    private boolean isABooleanValidateBtn() {
+        return !(editTextDateAndTime.getText().toString()).isEmpty() && !(editTextSubject.getText().toString()).isEmpty() &&
+                (!(editTextReservationName.getText().toString()).isEmpty() && (editTextReservationName.getText().toString().length() > 1)) &&
+                (!(editTextParticipants.getText().toString()).isEmpty()) && isEmailValid(editTextParticipants.getText().toString());
     }
 
     private void validateButtonClickListener() {
@@ -156,8 +154,7 @@ public class AddOrMeetingDetailsFragment extends Fragment implements DatePickerD
                 if (meeting.getId() == 0) {
                     meeting.setId(System.currentTimeMillis());
                     EventBus.getDefault().post(new AddMeetingEvent(meeting));
-                }
-                else {
+                } else {
                     EventBus.getDefault().post(new UpdateMeetingEvent(meeting));
                 }
 
@@ -218,30 +215,19 @@ public class AddOrMeetingDetailsFragment extends Fragment implements DatePickerD
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            /*validateBtn.setEnabled(!(editTextDateAndTime.getText().toString()).isEmpty() &&
-                    !(editTextReservationName.getText().toString()).isEmpty() &&
-                    !(editTextParticipants.getText().toString()).isEmpty() && (Patterns.EMAIL_ADDRESS.matcher(editTextParticipants.getText().toString()).matches()) &&
-                    !(editTextSubject.getText().toString()).isEmpty());*/
-            if (!(editTextDateAndTime.getText().toString()).isEmpty() && !(editTextSubject.getText().toString()).isEmpty() &&
-                    (!(editTextReservationName.getText().toString()).isEmpty() && (editTextReservationName.getText().toString().length() > 1)) &&
-                    (!(editTextParticipants.getText().toString()).isEmpty() && (Patterns.EMAIL_ADDRESS.matcher(editTextParticipants.getText().toString()).matches()))) {
+            if (isABooleanValidateBtn()) {
                 validateBtn.setEnabled(true);
             } else {
-                if (!(editTextReservationName.getText().toString()).isEmpty() && (editTextReservationName.getText().toString().length() < 1)) {
-                    Toast.makeText(getContext(), "Veuillez indiquer le nom de qui à reservé (minimum 2 caracteres)", Toast.LENGTH_LONG).show();
-
-                    if (!(Patterns.EMAIL_ADDRESS.matcher(editTextParticipants.getText().toString()).matches())) {
-                        Toast.makeText(getContext(), "Veuillez entrer un adresse mail valide", Toast.LENGTH_LONG).show();
-                    }
-                }
+                validateBtn.setEnabled(false);
             }
         }
 
         @Override
         public void afterTextChanged(Editable s) {
+
         }
     };
-    
+
 
     private void editTextDateListener() {
         editTextDateAndTime.setOnClickListener(new View.OnClickListener() {
@@ -281,46 +267,61 @@ public class AddOrMeetingDetailsFragment extends Fragment implements DatePickerD
         }
     }
 
+    boolean isEmailValid(String str) {
+        // le + pour au moins un espace ou plus
+        String[] mails = str.split(" +");
+        int j = 0;
+        for (int i = 0; i < mails.length; i++) {
+            if (!(android.util.Patterns.EMAIL_ADDRESS.matcher(mails[i]).matches())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        Log.d(TAG, "onAttach: ADD Fragment");
+        Log.d(TAG_AddOrMeetingDetailsFragment, "onAttach: ADD Fragment");
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart: ADD Fragment");
+        Log.d(TAG_AddOrMeetingDetailsFragment, "onStart: ADD Fragment");
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume: ADD Fragment");
+
+
+        Log.d(TAG_AddOrMeetingDetailsFragment, "onResume: ADD Fragment");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Log.d(TAG, "onPause: ADD Fragment");
+        Log.d(TAG_AddOrMeetingDetailsFragment, "onPause: ADD Fragment");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.d(TAG, "onStop: ADD Fragment");
+        Log.d(TAG_AddOrMeetingDetailsFragment, "onStop: ADD Fragment");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "onDestroy: ADD Fragment");
+        Log.d(TAG_AddOrMeetingDetailsFragment, "onDestroy: ADD Fragment");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        Log.d(TAG, "onDetach: ADD Fragment");
+        Log.d(TAG_AddOrMeetingDetailsFragment, "onDetach: ADD Fragment");
     }
 }

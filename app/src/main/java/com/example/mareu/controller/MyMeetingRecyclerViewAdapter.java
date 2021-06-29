@@ -20,7 +20,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.List;
 
 
-public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeetingRecyclerViewAdapter.ViewHolder> {
+public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeetingRecyclerViewAdapter.ViewHolder>  {
 
 
     private final List<Meeting> mMeetings;
@@ -77,7 +77,7 @@ public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeeting
             super(view);
             roundView = view.findViewById(R.id.imageRound);
             binView = view.findViewById(R.id.imageDelete);
-            meetingRoom = view.findViewById(R.id.RoomName);
+            meetingRoom = view.findViewById(R.id.roomName);
             time = view.findViewById(R.id.time);
             reservationName = view.findViewById(R.id.reservationName);
             mailAddress = view.findViewById(R.id.mailAddress);

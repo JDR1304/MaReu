@@ -16,12 +16,16 @@ public interface ApiService {
 
     Meeting getMeetingById(long id);
 
+    void updateMeeting(Meeting meeting);
+
     //Get List of room
 
     List <Room> getRooms();
 
     Room getRoomById(int id);
 
-    void updateMeeting(Meeting meeting);
+    List <Meeting> getMeetingByRoom(Room room);
+
+    List <Meeting> getMeetingByDate (String str);
 
 }
