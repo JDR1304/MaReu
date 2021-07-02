@@ -14,7 +14,7 @@ public class DummyApiService implements ApiService {
     private List<Room> rooms = DummyGenerator.generateRooms();
 
     @Override
-    public List<Meeting> getMeeting() {
+    public List<Meeting> getMeetings() {
         return meetings;
     }
 
@@ -25,7 +25,12 @@ public class DummyApiService implements ApiService {
 
     @Override
     public void removeMeeting(Meeting meeting) {
-        meetings.remove(meeting);
+        //meetings.remove(meeting);
+        for (int i = 0; i<meetings.size(); i++){
+            if (meetings.get(i).getId()== meeting.getId()){
+                meetings.remove(meetings.get(i));
+            }
+        }
     }
 
     @Override

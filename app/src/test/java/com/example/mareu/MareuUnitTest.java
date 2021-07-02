@@ -12,7 +12,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,7 +32,7 @@ public class MareuUnitTest {
 
     @Test
     public void getMeetingsWithSuccess() {
-        List<Meeting> meetings = service.getMeeting();
+        List<Meeting> meetings = service.getMeetings();
         List<Meeting> expectedMeetings = DummyGenerator.dummyMeetings;
         assertThat(meetings, IsIterableContainingInAnyOrder.containsInAnyOrder(expectedMeetings.toArray()));
 
@@ -44,21 +43,21 @@ public class MareuUnitTest {
         Meeting meetingCreated = new Meeting(100,new Room(10, "Réunion J", 0xFF6AC34A),
                 1618596000000L, "Alexandre", Arrays.asList("alexandre@lamzone.com","sebastien@lamzone.com"), "Prospection");
         service.addMeeting(meetingCreated);
-        assertTrue(service.getMeeting().contains(meetingCreated));
+        assertTrue(service.getMeetings().contains(meetingCreated));
 
     }
 
     @Test
     public void deleteMeetingWithSuccess() {
-        Meeting meetingToDelete = service.getMeeting().get(0);
+        Meeting meetingToDelete = service.getMeetings().get(0);
         service.removeMeeting(meetingToDelete);
-        assertFalse(service.getMeeting().contains(meetingToDelete));
+        assertFalse(service.getMeetings().contains(meetingToDelete));
 
     }
 
     @Test
     public void getMeetingByIdWithSuccess() {
-        List<Meeting> meetings = service.getMeeting();
+        List<Meeting> meetings = service.getMeetings();
         Meeting meeting = meetings.get(1);
         long id = meeting.getId();
         assertEquals(meeting, service.getMeetingById(id));
@@ -67,11 +66,11 @@ public class MareuUnitTest {
 
     @Test
     public void updateMeetingWithSuccess(){
-        Meeting meeting = service.getMeeting().get(0);
-        assertEquals("Jerome", service.getMeeting().get(0).getName());
+        Meeting meeting = service.getMeetings().get(0);
+        assertEquals("Jerome", service.getMeetings().get(0).getName());
         meeting.setName("Simon");
         service.updateMeeting(meeting);
-        assertEquals("Simon", service.getMeeting().get(0).getName());
+        assertEquals("Simon", service.getMeetings().get(0).getName());
     }
 
 
@@ -97,5 +96,7 @@ public class MareuUnitTest {
         List <Meeting> liste = service.getMeetingByDate(date);
         assertEquals(5,liste.size());
     }
+
+    //fonction init liste a faire
 
 }

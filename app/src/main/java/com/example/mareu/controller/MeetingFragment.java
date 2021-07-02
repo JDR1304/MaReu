@@ -27,10 +27,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -66,7 +63,7 @@ public class MeetingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_meeting, container, false);
         Log.d(TAG_MEETING_FRAGMENT, "onCreateView: Meeting Fragment");
         mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_meeting_recyclerview);
-        listPublisher(mApiService.getMeeting());
+        listPublisher(mApiService.getMeetings());
 
 
 
@@ -83,7 +80,7 @@ public class MeetingFragment extends Fragment {
     @Subscribe
     public void onEventDelete(DeleteMeetingEvent deleteMeeting) {
         mApiService.removeMeeting(deleteMeeting.meeting);
-        listPublisher(mApiService.getMeeting());
+        //listPublisher(mApiService.getMeetings());
         adapter.notifyDataSetChanged();
     }
 
@@ -112,7 +109,7 @@ public class MeetingFragment extends Fragment {
         listPublisher(meetingbydate);
     }
 
-    private void listPublisher(List<Meeting> meetings) {
+    public void listPublisher(List<Meeting> meetings) {
         if (mMeetingList == null){
             mMeetingList = new ArrayList<>();
         }
@@ -129,7 +126,7 @@ public class MeetingFragment extends Fragment {
     }
 
     public void allMeeting(){
-        listPublisher(mApiService.getMeeting());
+        listPublisher(mApiService.getMeetings());
     }
 
     @Override

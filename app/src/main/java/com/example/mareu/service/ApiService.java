@@ -8,7 +8,7 @@ import java.util.List;
 public interface ApiService {
 
 
-    List<Meeting> getMeeting();
+    List<Meeting> getMeetings();
 
     void addMeeting(Meeting meeting);
 

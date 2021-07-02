@@ -1,18 +1,23 @@
 package com.example.mareu;
 
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
 import com.example.mareu.controller.MainActivity;
+import com.example.mareu.service.ApiService;
+import com.example.mareu.service.DummyApiService;
 import com.example.mareu.utils.DeleteViewAction;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static androidx.test.InstrumentationRegistry.getContext;
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -44,7 +49,9 @@ import static org.junit.Assert.*;
 public class MareuInstrumentedTest {
 
     // This is fixed
-    private static int ITEMS_COUNT = 10;
+
+    private final ApiService apiService = new DummyApiService();
+
 
     private MainActivity mActivity;
 
@@ -78,6 +85,7 @@ public class MareuInstrumentedTest {
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(allOf(ViewMatchers.withId(R.id.roomName), isDisplayed()));
     }
+
     /**
      * Test if the item could be modify
      */
@@ -106,33 +114,19 @@ public class MareuInstrumentedTest {
     }
 
     /**
-     * Test if I can delete an item
-     */
-
-    @Test
-    public void deleteAnItem() {
-        onView(allOf(withId(R.id.fragment_meeting_recyclerview), isDisplayed())).check(withItemCount(ITEMS_COUNT));
-
-        onView(allOf(withId(R.id.fragment_meeting_recyclerview), isDisplayed()))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(1, new DeleteViewAction()));
-
-        onView(allOf(withId(R.id.fragment_meeting_recyclerview), isDisplayed())).check(withItemCount(ITEMS_COUNT - 1));
-
-    }
-
-    /**
      * Test if I can add an item
      */
 
     @Test
     public void addAnItem() {
+        final int ITEMS_COUNT = apiService.getMeetings().size();
         onView(allOf(withId(R.id.fragment_meeting_recyclerview), isDisplayed())).check(withItemCount(ITEMS_COUNT));
 
         onView(allOf(ViewMatchers.withId(R.id.floatingActionButton), isDisplayed()))
                 .perform(click());
         onView(allOf(withId(R.id.edit_text_topic), isDisplayed()))
                 .perform(replaceText("Sujet"), closeSoftKeyboard());
-        onView( allOf(withId(R.id.spinner), isDisplayed()))
+        onView(allOf(withId(R.id.spinner), isDisplayed()))
                 .perform(click());
         onData(anything()).atPosition(1)
                 .perform(click());
@@ -150,6 +144,22 @@ public class MareuInstrumentedTest {
                 .perform(click());
 
         onView(allOf(withId(R.id.fragment_meeting_recyclerview), isDisplayed())).check(withItemCount(ITEMS_COUNT + 1));
+
+    }
+
+    /**
+     * Test if I can delete an item
+     */
+
+    @Test
+    public void deleteAnItem() {
+        final int ITEMS_COUNT = apiService.getMeetings().size();
+        onView(allOf(withId(R.id.fragment_meeting_recyclerview), isDisplayed())).check(withItemCount(ITEMS_COUNT));
+
+        onView(allOf(withId(R.id.fragment_meeting_recyclerview), isDisplayed()))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(1, new DeleteViewAction()));
+
+        onView(allOf(withId(R.id.fragment_meeting_recyclerview), isDisplayed())).check(withItemCount(ITEMS_COUNT - 1));
 
     }
 
@@ -182,7 +192,7 @@ public class MareuInstrumentedTest {
                 .perform(click());
         onView(allOf(withId(R.id.edit_text_topic), isDisplayed()))
                 .perform(replaceText("Sujet"), closeSoftKeyboard());
-        onView( allOf(withId(R.id.spinner), isDisplayed()))
+        onView(allOf(withId(R.id.spinner), isDisplayed()))
                 .perform(click());
         onData(anything()).atPosition(1)
                 .perform(click());
