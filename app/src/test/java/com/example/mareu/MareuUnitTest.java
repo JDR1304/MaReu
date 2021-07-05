@@ -97,6 +97,4 @@ public class MareuUnitTest {
         assertEquals(5,liste.size());
     }
 
-    //fonction init liste a faire
-
 }

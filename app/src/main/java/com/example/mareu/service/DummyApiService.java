@@ -25,12 +25,12 @@ public class DummyApiService implements ApiService {
 
     @Override
     public void removeMeeting(Meeting meeting) {
-        //meetings.remove(meeting);
-        for (int i = 0; i<meetings.size(); i++){
+        meetings.remove(meeting);
+        /*for (int i = 0; i<meetings.size(); i++){
             if (meetings.get(i).getId()== meeting.getId()){
                 meetings.remove(meetings.get(i));
             }
-        }
+        }*/
     }
 
     @Override

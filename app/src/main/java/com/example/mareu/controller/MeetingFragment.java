@@ -66,7 +66,6 @@ public class MeetingFragment extends Fragment {
         listPublisher(mApiService.getMeetings());
 
 
-
         fab = view.findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
