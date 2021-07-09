@@ -1,6 +1,7 @@
 package com.example.mareu;
 
 
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
@@ -9,6 +10,7 @@ import androidx.test.rule.ActivityTestRule;
 
 import com.example.mareu.controller.MainActivity;
 import com.example.mareu.controller.MeetingFragment;
+import com.example.mareu.controller.MyMeetingRecyclerViewAdapter;
 import com.example.mareu.di.DI;
 import com.example.mareu.service.ApiService;
 import com.example.mareu.service.DummyApiService;
@@ -22,6 +24,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 
+import static androidx.test.InstrumentationRegistry.getContext;
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -31,6 +34,7 @@ import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.RootMatchers.isPlatformPopup;
 import static androidx.test.espresso.matcher.ViewMatchers.hasMinimumChildCount;
+import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -40,6 +44,8 @@ import static com.example.mareu.controller.MeetingFragment.TAG_MEETING_FRAGMENT;
 import static com.example.mareu.utils.RecyclerViewItemCountAssertion.withItemCount;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.*;
@@ -55,8 +61,9 @@ public class MareuInstrumentedTest {
 
     // This is fixed
 
-    //private final ApiService apiService = new DummyApiService();
-    //private final int ITEMS_COUNT = apiService.getMeetings().size();
+    private ApiService apiService = new DummyApiService();
+    //private int ITEMS_COUNT = apiService.getMeetings().size();
+    private static int ITEMS_COUNT = 10;
 
 
     private MainActivity mActivity;
@@ -69,18 +76,6 @@ public class MareuInstrumentedTest {
     public void setUp() {
         mActivity = mActivityRule.getActivity();
         assertThat(mActivity, notNullValue());
-
-    }
-
-    public void initRecyclerView(){
-
-                //Je ne mets pas la recyclerview à jour de l'app espresso
-        /*mActivity.runOnUiThread(new Runnable() {
-            public void run(){
-                MeetingFragment meetingFragment = (MeetingFragment) mActivity.getSupportFragmentManager().findFragmentByTag(TAG_MEETING_FRAGMENT);
-                meetingFragment.listPublisher(DI.getApiService().getMeetings());
-            }
-        });*/
 
     }
 
@@ -139,7 +134,6 @@ public class MareuInstrumentedTest {
     @Test
     public void addAnItem() {
 
-        int ITEMS_COUNT = DI.getApiService().getMeetings().size();
         onView(allOf(withId(R.id.fragment_meeting_recyclerview), isDisplayed())).check(withItemCount(ITEMS_COUNT));
 
         onView(allOf(ViewMatchers.withId(R.id.floatingActionButton), isDisplayed()))
@@ -165,6 +159,9 @@ public class MareuInstrumentedTest {
 
         onView(allOf(withId(R.id.fragment_meeting_recyclerview), isDisplayed())).check(withItemCount(ITEMS_COUNT + 1));
 
+       /* onView(allOf(withId(R.id.fragment_meeting_recyclerview), isDisplayed()))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(10, new DeleteViewAction()));*/
+
     }
 
     /**
@@ -173,35 +170,15 @@ public class MareuInstrumentedTest {
 
     @Test
     public void deleteAnItem() {
-        int ITEMS_COUNT = DI.getApiService().getMeetings().size();
+
         onView(allOf(withId(R.id.fragment_meeting_recyclerview), isDisplayed())).check(withItemCount(ITEMS_COUNT));
 
         onView(allOf(withId(R.id.fragment_meeting_recyclerview), isDisplayed()))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(1, new DeleteViewAction()));
+                .perform(RecyclerViewActions.actionOnItemAtPosition(9, new DeleteViewAction()));
 
         onView(allOf(withId(R.id.fragment_meeting_recyclerview), isDisplayed())).check(withItemCount(ITEMS_COUNT - 1));
-/*
-        onView(allOf(ViewMatchers.withId(R.id.floatingActionButton), isDisplayed()))
-                .perform(click());
-        onView(allOf(withId(R.id.edit_text_topic), isDisplayed()))
-                .perform(replaceText("Sujet"), closeSoftKeyboard());
-        onView(allOf(withId(R.id.spinner), isDisplayed()))
-                .perform(click());
-        onData(anything()).atPosition(1)
-                .perform(click());
-        onView(allOf(withId(R.id.edit_text_reservation_name), isDisplayed()))
-                .perform(replaceText("AddAfterDelete"), closeSoftKeyboard());
-        onView(allOf(withId(R.id.edit_text_date), isDisplayed()))
-                .perform(click());
-        onView(allOf(withId(android.R.id.button1), withText("OK")))
-                .perform(scrollTo(), click());
-        onView(allOf(withId(android.R.id.button1), withText("OK")))
-                .perform(scrollTo(), click());
-        onView(allOf(withId(R.id.edit_text_participantes), isDisplayed()))
-                .perform(replaceText("addAfterDelete@lamzon.com"), closeSoftKeyboard());
-        onView(allOf(withId(R.id.validate_button), isDisplayed()))
-                .perform(click());*/
 
+        ITEMS_COUNT -= 1;
     }
 
     /**
@@ -219,9 +196,8 @@ public class MareuInstrumentedTest {
                 .perform(click());
         onView(withText(containsString("Réunion D"))).inRoot(isPlatformPopup())
                 .perform(click());
-        onView((withId(R.id.roomName)))
-                .check(matches(withText("Réunion D")));
-
+        onView(allOf(withId(R.id.roomName)))
+                .check((matches(withText("Réunion D"))));
     }
 
     /**
@@ -237,7 +213,7 @@ public class MareuInstrumentedTest {
                 .perform(replaceText("Sujet"), closeSoftKeyboard());
         onView(allOf(withId(R.id.spinner), isDisplayed()))
                 .perform(click());
-        onData(anything()).atPosition(3)
+        onData(anything()).atPosition(1)
                 .perform(click());
         onView(allOf(withId(R.id.edit_text_reservation_name), isDisplayed()))
                 .perform(replaceText("Simon"), closeSoftKeyboard());
@@ -259,7 +235,7 @@ public class MareuInstrumentedTest {
         onView(allOf(withId(android.R.id.button1), withText("OK")))
                 .perform(scrollTo(), click());
         onView(allOf(withId(R.id.roomName)))
-                .check(matches(withText("Réunion D")));
+                .check(matches(withText("Réunion B")));
 
     }
 

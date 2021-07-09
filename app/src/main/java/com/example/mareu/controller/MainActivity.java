@@ -21,7 +21,9 @@ import android.widget.Toast;
 
 import com.example.mareu.R;
 import com.example.mareu.di.DI;
+import com.example.mareu.model.Meeting;
 import com.example.mareu.model.Room;
+import com.example.mareu.service.ApiService;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -170,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
         MeetingFragment meetingF = (MeetingFragment) getSupportFragmentManager().findFragmentByTag(TAG_MEETING_FRAGMENT);
         meetingF.filterByDate(str);
-    }
 
+    }
 
 }

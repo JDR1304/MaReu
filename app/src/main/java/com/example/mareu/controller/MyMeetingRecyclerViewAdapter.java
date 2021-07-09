@@ -23,7 +23,7 @@ import java.util.List;
 public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeetingRecyclerViewAdapter.ViewHolder>  {
 
 
-    private final List<Meeting> mMeetings;
+    private List<Meeting> mMeetings;
 
     public MyMeetingRecyclerViewAdapter (List<Meeting> items){ mMeetings = items;}
 
@@ -33,6 +33,9 @@ public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeeting
                 .inflate(R.layout.item_meeting, parent, false);
         return new ViewHolder(view);
     }
+
+
+
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
