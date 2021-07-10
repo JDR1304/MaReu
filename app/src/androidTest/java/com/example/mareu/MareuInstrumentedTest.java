@@ -62,7 +62,6 @@ public class MareuInstrumentedTest {
     // This is fixed
 
     private ApiService apiService = new DummyApiService();
-    //private int ITEMS_COUNT = apiService.getMeetings().size();
     private static int ITEMS_COUNT = 10;
 
 
@@ -159,8 +158,8 @@ public class MareuInstrumentedTest {
 
         onView(allOf(withId(R.id.fragment_meeting_recyclerview), isDisplayed())).check(withItemCount(ITEMS_COUNT + 1));
 
-       /* onView(allOf(withId(R.id.fragment_meeting_recyclerview), isDisplayed()))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(10, new DeleteViewAction()));*/
+        onView(allOf(withId(R.id.fragment_meeting_recyclerview), isDisplayed()))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(ITEMS_COUNT, new DeleteViewAction()));
 
     }
 
@@ -236,6 +235,7 @@ public class MareuInstrumentedTest {
                 .perform(scrollTo(), click());
         onView(allOf(withId(R.id.roomName)))
                 .check(matches(withText("Réunion B")));
+
 
     }
 
