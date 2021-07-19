@@ -84,7 +84,7 @@ public class MeetingFragment extends Fragment {
     private void updateListByFilter() {
         switch (filterType) {
             case FILTER_NONE:
-                allMeeting();
+                getAllMeeting();
                 break;
             case FILTER_BY_ROOM:
                 filterByRoom(selectedRoom);
@@ -131,7 +131,7 @@ public class MeetingFragment extends Fragment {
         updateList(meetingByDate);
     }
 
-    public void allMeeting() {
+    public void getAllMeeting() {
         filterType = FILTER_NONE;
         updateList(mApiService.getMeetings());
     }
