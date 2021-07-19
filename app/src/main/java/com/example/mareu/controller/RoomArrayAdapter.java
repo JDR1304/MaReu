@@ -2,21 +2,17 @@ package com.example.mareu.controller;
 
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-
-import com.example.mareu.R;
 import com.example.mareu.model.Room;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class RoomArrayAdapter extends ArrayAdapter <Room> {
+public class RoomArrayAdapter extends ArrayAdapter<Room> {
 
     private List<Room> items;
 
@@ -25,6 +21,7 @@ public class RoomArrayAdapter extends ArrayAdapter <Room> {
         this.items = items;
 
     }
+
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         TextView v = (TextView) super.getView(position, convertView, parent);

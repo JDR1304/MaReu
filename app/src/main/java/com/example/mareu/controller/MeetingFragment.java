@@ -60,14 +60,12 @@ public class MeetingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApiService = DI.getApiService();
-        Log.d(TAG_MEETING_FRAGMENT, "onCreate: Meeting Fragment");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_meeting, container, false);
-        Log.d(TAG_MEETING_FRAGMENT, "onCreateView: Meeting Fragment");
         mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_meeting_recyclerview);
 
         updateListByFilter();
@@ -114,10 +112,9 @@ public class MeetingFragment extends Fragment {
     }
 
     public void filterByRoom(Room room) {
-        Log.d("TAG", "filterByRoom: ");
         filterType = FILTER_BY_ROOM;
         selectedRoom = room;
-        List <Meeting> meetingByRoom;
+        List<Meeting> meetingByRoom;
         meetingByRoom = mApiService.getMeetingByRoom(room);
         updateList(meetingByRoom);
 
@@ -163,7 +160,7 @@ public class MeetingFragment extends Fragment {
         super.onStart();
 
         Log.d(TAG_MEETING_FRAGMENT, "onStart: Meeting Fragment");
-        //initList();
+
     }
 
     @Override

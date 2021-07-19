@@ -6,7 +6,7 @@ public class UpdateMeetingEvent {
 
     public Meeting meeting;
 
-    public UpdateMeetingEvent(Meeting meeting){
+    public UpdateMeetingEvent(Meeting meeting) {
         this.meeting = meeting;
     }
 

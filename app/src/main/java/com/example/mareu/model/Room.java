@@ -1,15 +1,14 @@
 package com.example.mareu.model;
 
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-public class Room  {
+public class Room {
 
     private int id;
     private String name;
     private int colorDrawable;
-    /** Key for Room **/
+    /**
+     * Key for Room
+     **/
     public static final String ROOM_KEY = "ROOM_KEY";
 
     public Room(int id, String name, int colorDrawable) {
@@ -19,7 +18,9 @@ public class Room  {
     }
 
 
-   /** getters and setters*/
+    /**
+     * getters and setters
+     */
     public int getId() {
         return id;
     }

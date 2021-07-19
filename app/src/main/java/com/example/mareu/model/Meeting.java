@@ -1,38 +1,52 @@
 package com.example.mareu.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class Meeting  {
+public class Meeting {
 
-    /** Identifier */
+    /**
+     * Identifier
+     */
     private long id;
 
-    /** Meeting room */
+    /**
+     * Meeting room
+     */
     private Room meetingRoom;
 
-    /** reservation Time */
+    /**
+     * reservation Time
+     */
     private long time;
 
-    /** name who reserved the room */
+    /**
+     * name who reserved the room
+     */
     private String name;
 
-    /** email address */
+    /**
+     * email address
+     */
     private List<String> participantEmails;
 
-    /** topic */
+    /**
+     * topic
+     */
     private String topic;
 
-    /** Key for Room **/
+    /**
+     * Key for Room
+     **/
     public static final String MEETING_KEY = "MEETING_KEY";
 
-    public Meeting (long id){}
+    public Meeting(long id) {
+    }
 
-    /** Constructor */
+    /**
+     * Constructor
+     */
     public Meeting(long id, Room meetingRoom, long time, String name, List<String> participantEmails, String topic) {
         this.id = id;
         this.meetingRoom = meetingRoom;
@@ -42,7 +56,9 @@ public class Meeting  {
         this.topic = topic;
     }
 
-    /** Getters and setters */
+    /**
+     * Getters and setters
+     */
     public long getId() {
         return id;
     }
@@ -91,7 +107,7 @@ public class Meeting  {
         this.topic = topic;
     }
 
-    public String getStringMails () {
+    public String getStringMails() {
         String emails = "";
         String space = "  ";
         for (int i = 0; i < participantEmails.size(); i++) {
@@ -100,8 +116,7 @@ public class Meeting  {
         return emails;
     }
 
-    public String setTime (long timeStamp){
-        //SimpleDateFormat formatter = new SimpleDateFormat("- HH:mm -");
+    public String setTime(long timeStamp) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd  HH:mm");
         String dateString = formatter.format(new Date(Long.parseLong(Long.toString(timeStamp))));
         return dateString;

@@ -20,21 +20,21 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.List;
 
 
-public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeetingRecyclerViewAdapter.ViewHolder>  {
+public class MyMeetingRecyclerViewAdapter extends RecyclerView.Adapter<MyMeetingRecyclerViewAdapter.ViewHolder> {
 
 
     private List<Meeting> mMeetings;
 
-    public MyMeetingRecyclerViewAdapter (List<Meeting> items){ mMeetings = items;}
+    public MyMeetingRecyclerViewAdapter(List<Meeting> items) {
+        mMeetings = items;
+    }
 
     @Override
-    public ViewHolder onCreateViewHolder( ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_meeting, parent, false);
         return new ViewHolder(view);
     }
-
-
 
 
     @Override

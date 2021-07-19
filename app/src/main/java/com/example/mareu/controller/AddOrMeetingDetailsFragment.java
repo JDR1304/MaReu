@@ -62,7 +62,6 @@ public class AddOrMeetingDetailsFragment extends Fragment implements DatePickerD
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG_AddOrMeetingDetailsFragment, "onCreate: add Fragment");
         // Permet d'avoir la fenetre dans laquelle on écrit tjs visible
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
@@ -88,8 +87,6 @@ public class AddOrMeetingDetailsFragment extends Fragment implements DatePickerD
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_or_meeting_details, container, false);
-
-        Log.d(TAG_AddOrMeetingDetailsFragment, "onCreateView: add Fragment");
 
         validateBtn = view.findViewById(R.id.validate_button);
 
@@ -149,7 +146,6 @@ public class AddOrMeetingDetailsFragment extends Fragment implements DatePickerD
                 meeting.setName(editTextReservationName.getText().toString());
                 meeting.setParticipantEmails(Collections.singletonList(editTextParticipants.getText().toString()));
                 meeting.setTopic(editTextSubject.getText().toString());
-
 
                 if (meeting.getId() == 0) {
                     meeting.setId(System.currentTimeMillis());
@@ -290,14 +286,11 @@ public class AddOrMeetingDetailsFragment extends Fragment implements DatePickerD
     public void onStart() {
         super.onStart();
         Log.d(TAG_AddOrMeetingDetailsFragment, "onStart: ADD Fragment");
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-
         Log.d(TAG_AddOrMeetingDetailsFragment, "onResume: ADD Fragment");
     }
 

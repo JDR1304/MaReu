@@ -11,6 +11,7 @@ public class AddMeetingEvent {
 
     /**
      * Constructor.
+     *
      * @param meeting
      */
     public AddMeetingEvent(Meeting meeting) {

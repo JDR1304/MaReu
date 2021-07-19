@@ -20,12 +20,12 @@ public interface ApiService {
 
     //Get List of room
 
-    List <Room> getRooms();
+    List<Room> getRooms();
 
     Room getRoomById(int id);
 
-    List <Meeting> getMeetingByRoom(Room room);
+    List<Meeting> getMeetingByRoom(Room room);
 
-    List <Meeting> getMeetingByDate (String str);
+    List<Meeting> getMeetingByDate(String str);
 
 }

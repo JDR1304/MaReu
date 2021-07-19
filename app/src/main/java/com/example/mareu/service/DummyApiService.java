@@ -26,17 +26,12 @@ public class DummyApiService implements ApiService {
     @Override
     public void removeMeeting(Meeting meeting) {
         meetings.remove(meeting);
-        /*for (int i = 0; i<meetings.size(); i++){
-            if (meetings.get(i).getId()== meeting.getId()){
-                meetings.remove(meetings.get(i));
-            }
-        }*/
     }
 
     @Override
     public Meeting getMeetingById(long id) {
-        for (int i = 0; i<meetings.size(); i++){
-            if (meetings.get(i).getId()== id){
+        for (int i = 0; i < meetings.size(); i++) {
+            if (meetings.get(i).getId() == id) {
                 return meetings.get(i);
             }
         }
@@ -67,9 +62,9 @@ public class DummyApiService implements ApiService {
 
     @Override
     public List<Meeting> getMeetingByRoom(Room room) {
-        List <Meeting> liste = new ArrayList<>();
-        for (int i = 0; i<meetings.size(); i++){
-            if (meetings.get(i).getRoom().getName() == room.getName()){
+        List<Meeting> liste = new ArrayList<>();
+        for (int i = 0; i < meetings.size(); i++) {
+            if (meetings.get(i).getRoom().getName() == room.getName()) {
                 liste.add(meetings.get(i));
             }
         }
@@ -78,11 +73,11 @@ public class DummyApiService implements ApiService {
 
     @Override
     public List<Meeting> getMeetingByDate(String str) {
-        List <Meeting> liste = new ArrayList<>();
-        for (int i = 0; i<meetings.size(); i++){
+        List<Meeting> liste = new ArrayList<>();
+        for (int i = 0; i < meetings.size(); i++) {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
             String dateString = formatter.format(new Date(Long.parseLong(Long.toString(meetings.get(i).getTimeStamp()))));
-            if ( dateString.equals(str)){
+            if (dateString.equals(str)) {
                 liste.add(meetings.get(i));
             }
         }

@@ -28,7 +28,9 @@ public class MareuUnitTest {
     private ApiService service;
 
     @Before
-    public void setup() {service = DI.getNewInstanceApiService();}
+    public void setup() {
+        service = DI.getNewInstanceApiService();
+    }
 
     @Test
     public void getMeetingsWithSuccess() {
@@ -40,8 +42,8 @@ public class MareuUnitTest {
 
     @Test
     public void addMeetingWithSuccess() {
-        Meeting meetingCreated = new Meeting(100,new Room(10, "Réunion J", 0xFF6AC34A),
-                1618596000000L, "Alexandre", Arrays.asList("alexandre@lamzone.com","sebastien@lamzone.com"), "Prospection");
+        Meeting meetingCreated = new Meeting(100, new Room(10, "Réunion J", 0xFF6AC34A),
+                1618596000000L, "Alexandre", Arrays.asList("alexandre@lamzone.com", "sebastien@lamzone.com"), "Prospection");
         service.addMeeting(meetingCreated);
         assertTrue(service.getMeetings().contains(meetingCreated));
 
@@ -65,7 +67,7 @@ public class MareuUnitTest {
     }
 
     @Test
-    public void updateMeetingWithSuccess(){
+    public void updateMeetingWithSuccess() {
         Meeting meeting = service.getMeetings().get(0);
         assertEquals("Jerome", service.getMeetings().get(0).getName());
         meeting.setName("Simon");
@@ -82,19 +84,20 @@ public class MareuUnitTest {
         assertEquals(room, service.getRoomById(id));
 
     }
+
     @Test
-    public void getMeetingByRoomWithSuccess(){
+    public void getMeetingByRoomWithSuccess() {
         Room room = new Room(10, "Réunion J", 0xFF6AC34A);
-        List <Meeting> liste = service.getMeetingByRoom(room);
-        assertEquals(1,liste.size());
+        List<Meeting> liste = service.getMeetingByRoom(room);
+        assertEquals(1, liste.size());
 
     }
 
     @Test
-    public void getMeetingByDateWithSuccess (){
+    public void getMeetingByDateWithSuccess() {
         String date = "2021/04/16";
-        List <Meeting> liste = service.getMeetingByDate(date);
-        assertEquals(5,liste.size());
+        List<Meeting> liste = service.getMeetingByDate(date);
+        assertEquals(5, liste.size());
     }
 
 }

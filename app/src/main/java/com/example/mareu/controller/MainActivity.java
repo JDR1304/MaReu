@@ -9,7 +9,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,22 +16,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.example.mareu.R;
 import com.example.mareu.di.DI;
-import com.example.mareu.model.Meeting;
 import com.example.mareu.model.Room;
-import com.example.mareu.service.ApiService;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import static com.example.mareu.controller.MeetingFragment.TAG_MEETING_FRAGMENT;
@@ -47,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         setContentView(R.layout.activity_main);
 
         MeetingFragment meetingFragment = MeetingFragment.newInstance();
-
         addFragment(meetingFragment);
 
     }
@@ -74,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     @Subscribe
     public void onEvent(AddOrMeetingDetailsFragment addOrMeetingDetailsFragment) {
 
-        Toast.makeText(this, "Display add or meeting details fragment", Toast.LENGTH_SHORT).show();
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.frame_layout_main, addOrMeetingDetailsFragment, AddOrMeetingDetailsFragment.TAG_AddOrMeetingDetailsFragment);
@@ -93,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         MeetingFragment meetingF = (MeetingFragment) getSupportFragmentManager().findFragmentByTag(TAG_MEETING_FRAGMENT);
 
-        // Handle item selection
         switch (item.getItemId()) {
             case R.id.sort_by_meeting_room:
 
@@ -129,7 +119,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 return true;
 
             case R.id.sort_by_date:
-                Toast.makeText(this, "tri par date", Toast.LENGTH_SHORT).show();
                 int myYear, myday, myMonth;
                 Calendar calendar = Calendar.getInstance();
                 myYear = calendar.get(Calendar.YEAR);
@@ -141,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 return true;
             case R.id.all_meetings:
 
-                meetingF.allMeeting();
+                meetingF.getAllMeeting();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -168,7 +157,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         }
 
         String str = (String.valueOf(year) + "/" + strMonth + "/" + strDayOfMonth);
-        Log.d("valeur de str", str);
 
         MeetingFragment meetingF = (MeetingFragment) getSupportFragmentManager().findFragmentByTag(TAG_MEETING_FRAGMENT);
         meetingF.filterByDate(str);

@@ -25,7 +25,6 @@ public class DeleteViewAction implements ViewAction {
     @Override
     public void perform(UiController uiController, View view) {
         View button = view.findViewById(R.id.imageDelete);
-        // Maybe check for null
         button.performClick();
     }
 }
