@@ -3,16 +3,15 @@ package com.example.mareu.controller;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.mareu.R;
 import com.example.mareu.di.DI;
@@ -34,14 +33,18 @@ import java.util.List;
 public class MeetingFragment extends Fragment {
 
     public static String TAG_MEETING_FRAGMENT = MeetingFragment.class.getSimpleName();
+
+    public static final int FILTER_NONE = 0;
+    public static final int FILTER_BY_ROOM = 1;
+    public static final int FILTER_BY_DATE = 2;
+    private int filterType = FILTER_NONE;
+    private Room selectedRoom;
+    private String selectedDate;
+
     private ApiService mApiService;
     private RecyclerView mRecyclerView;
     private MyMeetingRecyclerViewAdapter adapter;
-    private FloatingActionButton fab;
     private List<Meeting> mMeetingList;
-
-    private List <Meeting> currentFilterList;
-    int firstConnection =0;
 
     /**
      * Create and return a new instance
@@ -57,7 +60,6 @@ public class MeetingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApiService = DI.getApiService();
-        currentFilterList = new ArrayList<>();
         Log.d(TAG_MEETING_FRAGMENT, "onCreate: Meeting Fragment");
     }
 
@@ -68,13 +70,8 @@ public class MeetingFragment extends Fragment {
         Log.d(TAG_MEETING_FRAGMENT, "onCreateView: Meeting Fragment");
         mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_meeting_recyclerview);
 
-        if (firstConnection == 0) {
-            listPublisher(mApiService.getMeetings());
-            firstConnection++;
-        }else {
-            listPublisher(currentFilterList);
-        }
-        fab = view.findViewById(R.id.floatingActionButton);
+        updateListByFilter();
+        FloatingActionButton fab = view.findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,51 +81,62 @@ public class MeetingFragment extends Fragment {
         return view;
     }
 
+    private void updateListByFilter() {
+        switch (filterType) {
+            case FILTER_NONE:
+                allMeeting();
+                break;
+            case FILTER_BY_ROOM:
+                filterByRoom(selectedRoom);
+                break;
+            case FILTER_BY_DATE:
+                filterByDate(selectedDate);
+                break;
+        }
+    }
+
     @Subscribe
     public void onEventDelete(DeleteMeetingEvent deleteMeeting) {
         mApiService.removeMeeting(deleteMeeting.meeting);
-        mMeetingList.remove(deleteMeeting.meeting);
-        updateAndNotifyAdapter();
-    }
-
-    private void updateAndNotifyAdapter() {
-        currentFilterList.clear();
-        currentFilterList.addAll(mMeetingList);
-        adapter.notifyDataSetChanged();
+        updateListByFilter();
     }
 
     @Subscribe
     public void onEventAdd(AddMeetingEvent addMeeting) {
         mApiService.addMeeting(addMeeting.meeting);
-        mMeetingList.add(addMeeting.meeting);
-        updateAndNotifyAdapter();
+        updateListByFilter();
     }
 
     @Subscribe
     public void updateMeetingEvent(UpdateMeetingEvent updateMeeting) {
         mApiService.updateMeeting(updateMeeting.meeting);
-        updateAndNotifyAdapter();
+        updateListByFilter();
     }
 
     public void filterByRoom(Room room) {
         Log.d("TAG", "filterByRoom: ");
-        List<Meeting> meetingbyroom = new ArrayList<>();
-        meetingbyroom = mApiService.getMeetingByRoom(room);
-        listPublisher(meetingbyroom);
+        filterType = FILTER_BY_ROOM;
+        selectedRoom = room;
+        List <Meeting> meetingByRoom;
+        meetingByRoom = mApiService.getMeetingByRoom(room);
+        updateList(meetingByRoom);
 
     }
 
     public void filterByDate(String str) {
-        List<Meeting> meetingbydate = new ArrayList<>();
-        meetingbydate = mApiService.getMeetingByDate(str);
-        listPublisher(meetingbydate);
+        filterType = FILTER_BY_DATE;
+        selectedDate = str;
+        List<Meeting> meetingByDate;
+        meetingByDate = mApiService.getMeetingByDate(str);
+        updateList(meetingByDate);
     }
 
     public void allMeeting() {
-        listPublisher(mApiService.getMeetings());
+        filterType = FILTER_NONE;
+        updateList(mApiService.getMeetings());
     }
 
-    public void listPublisher(List<Meeting> meetings) {
+    public void updateList(List<Meeting> meetings) {
         if (mMeetingList == null) {
             mMeetingList = new ArrayList<>();
         }
