@@ -51,8 +51,7 @@ public class AddOrMeetingDetailsFragment extends Fragment implements DatePickerD
 
     private Spinner roomsSpinner;
     private Button validateBtn;
-
-    private EditText editTextRoom;
+    
     private EditText editTextDateAndTime;
     private EditText editTextReservationName;
     private EditText editTextParticipants;
