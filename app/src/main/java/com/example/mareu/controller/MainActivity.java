@@ -39,9 +39,14 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MeetingFragment meetingFragment = MeetingFragment.newInstance();
-        addFragment(meetingFragment);
 
+        MeetingFragment meetingF = (MeetingFragment) getSupportFragmentManager().findFragmentByTag(TAG_MEETING_FRAGMENT);
+        if (meetingF == null) {
+            meetingF = MeetingFragment.newInstance();
+        }
+        if (!meetingF.isAdded()) {
+            addFragment(meetingF);
+        }
     }
 
     private void addFragment(Fragment fragment) {
